@@ -1,3 +1,12 @@
+  function drawGraphic(width) {
+    console.log(width)
+
+    // do your resize event here
+  } 
+
+var pymChild = new pym.Child({ renderCallback: drawGraphic });
+
+
 var margin = 0,
     width = parseInt(d3.select("#master_container").style("width")) - margin*2,
     height = width / 2;
@@ -48,21 +57,22 @@ var pie = d3.layout.pie()
 
       //Trying to figure out a way to prune results.
     });
-// d3.json("/sites/prod/files/us_10m_topo4.json", function(error, us) {
-d3.json("js/us_10m_topo4.json", function(error, us) {
+// d3.json("/sites/prod/files/us_10m_topo5.json", function(error, us) {
+d3.json("js/us_10m_topo5.json", function(error, us) {
   if (error) return console.error(error);
 
-  svg.selectAll(".state")
-    .data(topojson.feature(us, us.objects.us_10m).features)
-    .enter().append("path")
-      .attr("class", function(d) {return "state " + d.id; });
-      // .attr("d", path);
+  // svg.selectAll(".state")
+  //   .data(topojson.feature(us, us.objects.us_10m).features)
+  //   .enter().append("path")
+  //     .attr("class", function(d) {return "state " + d.id; });
+  //     // .attr("d", path);
 
-  svg.append("path")
-    .datum(topojson.mesh(us, us.objects.us_10m, function(a,b) {return a !== b;}))
-    .attr("class", "state-boundary");
-    // .attr("d", path);
+  // svg.append("path")
+  //   .datum(topojson.mesh(us, us.objects.us_10m, function(a,b) {return a !== b;}))
+  //   .attr("class", "state-boundary");
+  //   // .attr("d", path);
 
+// 
   svg.append("g")
     .attr("class", "bubbles")
   .selectAll("circle")
@@ -114,7 +124,7 @@ d3.json("js/us_10m_topo4.json", function(error, us) {
           .text(d3.format(".1s"));
 
       // legend.append("text")
-      //     .text("BTU")
+      //     .text("Btu")
       //     .attr("transform", "translate(" + (width - (radius2(10000) + 10)) + "," + (height - 10) + ")");
 
   legend        
@@ -155,6 +165,8 @@ d3.json("js/us_10m_topo4.json", function(error, us) {
     }
 
     function tooltip(d) {     
+      console.log(d)
+
       width = parseInt(d3.select("#master_container").style("width")) - margin*2,
 
       // Remove everything and start over.
@@ -232,7 +244,7 @@ d3.json("js/us_10m_topo4.json", function(error, us) {
         .append("text")
         .attr("class","tip-text2")
         .text(function(d){
-            return "Total: " + data.properties.total + " Trillion BTU";
+            return "Total: " + data.properties.total + " Trillion Btu";
         })
         .attr("transform", function() { 
           return "translate(" + tip_text2 + ")"; });
@@ -269,6 +281,11 @@ var tip_position = [(centroid_adjusted[0] + 85),(centroid_adjusted[1] + 205)];
           
 
 // Pie chart
+    
+      // console.log(data_array)
+      // console.log(pie_center)
+      // console
+
 
       var g = svg.selectAll(".arc")
           .data(pie(data_array))
@@ -279,7 +296,9 @@ var tip_position = [(centroid_adjusted[0] + 85),(centroid_adjusted[1] + 205)];
 
       g.append("path")
         .attr("d", arc)
-        .style("fill", function(d) { return color(d.data.type); });
+        .style("fill", function(d) { 
+          // console.log(d)
+          return color(d.data.type); });
 
       // g.append("text")
       //   .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
@@ -296,7 +315,7 @@ var tip_position = [(centroid_adjusted[0] + 85),(centroid_adjusted[1] + 205)];
 
     function arctip(d) { 
     d3.selectAll(".tip-text3").remove();
-       
+       console.log(d)
     var tip_data = d.data
 
     var tip_position = [(tip_data.x + 85),(tip_data.y + 205)];
@@ -316,7 +335,7 @@ var tip_position = [(centroid_adjusted[0] + 85),(centroid_adjusted[1] + 205)];
 
       toolbody.append("tspan")      
         .text(function(d){
-            return tip_data.value + " Trillion BTU";
+            return tip_data.value + " Trillion Btu";
         })
         .attr("x",0)
         .attr("y",15);
