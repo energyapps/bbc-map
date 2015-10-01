@@ -58,7 +58,7 @@ var pie = d3.layout.pie()
       //Trying to figure out a way to prune results.
     });
 // d3.json("/sites/prod/files/us_10m_topo5.json", function(error, us) {
-d3.json("js/us_10m_topo5.json", function(error, us) {
+d3.json("js/us_10m_topo4.json", function(error, us) {
   if (error) return console.error(error);
 
   // svg.selectAll(".state")
