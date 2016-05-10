@@ -38,7 +38,7 @@ var legend = svg.append("g")
 
 // Pie chart parameters //first 4 colors are bluish and fossil/nuclear, last two are renewable. Add a diff for nuclear, tweak??
 var color = d3.scale.ordinal()
-    .range(['#f0f9e8','#bae4bc','#7bccc4','#2b8cbe']);
+    .range(['#bae4bc','#7bccc4','#2b8cbe']);
 
 var radius = 80;
 var arc = d3.svg.arc()
@@ -116,8 +116,8 @@ var pie = d3.layout.pie()
 
       legend.append("text")
           .attr("dy", "1.3em")
-          .text(d3.format(".1s"));
-          // .text(function(d){return d});
+          // .text(d3.format(".1s"));
+          .text(function(d){return d});
 
         // hang the legend based on louisiana's location
       // var lgspot = [(path.centroid(TheData[8])[0] + (width / 7)),(path.centroid(TheData[8])[1] + (width / 20))]
@@ -135,6 +135,7 @@ var pie = d3.layout.pie()
       legend.selectAll("text")
         .attr("y", function(d) { return -2 * radius2(d); }); 
 
+      d3.selectAll(".legendText").remove();     
       // Legend Text
       var legendText = svg.append("g")
       .attr("class", "legendText lg")
@@ -146,7 +147,7 @@ var pie = d3.layout.pie()
           return "translate(" + lgspot2 + ")"; });     
 
       legendText.append("tspan")
-        .text("Buildings Participating")
+        .text("Partners' Buildings Participating")
         .attr("x",0)
         .attr("y",0);
 
@@ -206,17 +207,20 @@ var pie = d3.layout.pie()
         };
       };
 
-        tip_text  = [(centroid_adjusted[0] + radius + 5),(centroid_adjusted[1] + 20)];
-        tip_text2  = [(centroid_adjusted[0] + radius + 5),(centroid_adjusted[1] + 40)];
-        pie_center = [(centroid_adjusted[0] + radius + 5),(centroid_adjusted[1]+(radius + 40))];
-        tip_close = [(centroid_adjusted[0] + radius*2),(centroid_adjusted[1]+(15))];
+        tip_text  = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1] + 20)];
+        tip_text2  = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1] + 40)];
+        pie_center = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1]+(radius + 40))];
+        tip_close = [(centroid_adjusted[0] + radius*2 + 10),(centroid_adjusted[1]+(15))];
+
+      var zeroten = parseInt(data.properties.imp_none) + parseInt(data.properties.imp_ten);
+
+
 
 // Create array for pie charts here!!!!!!!!!!!!!!!!!!!!!!! put in memory and use laterZZzzzZzzZzzzZZzzZZZz
-      var data_array = [        
-        {type: "None", total: data.properties.total ,value: data.properties.imp_none, x:centroid_adjusted[0], y:centroid_adjusted[1]},
-        {type: "1-10%", total: data.properties.total ,value: data.properties.imp_ten, x:centroid_adjusted[0], y:centroid_adjusted[1]},
-        {type: "11-20%", total: data.properties.total ,value: data.properties.imp_twenty, x:centroid_adjusted[0], y:centroid_adjusted[1]},
-        {type: ">20%", total: data.properties.total ,value: data.properties.imp_greater, x:centroid_adjusted[0], y:centroid_adjusted[1]}
+      var data_array = [              
+        {type: "0-10%", total: data.properties.total, value: zeroten, x:centroid_adjusted[0], y:centroid_adjusted[1]},
+        {type: "11-20%", total: data.properties.total, value: data.properties.imp_twenty, x:centroid_adjusted[0], y:centroid_adjusted[1]},
+        {type: ">20%", total: data.properties.total, value: data.properties.imp_greater, x:centroid_adjusted[0], y:centroid_adjusted[1]}
         ];
 
       var tooltipContainer = svg.append("g")
@@ -225,7 +229,7 @@ var pie = d3.layout.pie()
         // .attr("id", "tooltip")
         .attr("transform", function() { 
           return "translate(" + centroid_adjusted + ")"; })
-        .attr("width", (radius * 2 + 10))
+        .attr("width", (radius * 2 + 20))
         .attr("height", (radius * 2 + 65))
         .attr("rx", 6)
         .attr("ry", 6)
@@ -245,7 +249,9 @@ var pie = d3.layout.pie()
         .append("text")
         .attr("class","tip-text2")
         .text(function(d){
-            return "Total: " + data.properties.total + " Buildings";
+            //calculate million sqft
+            var sqft = Math.round(Math.round(data.properties.sum_sqft) / 10000) / 100 ;
+            return sqft + " million sq. ft.";
         })
         .attr("transform", function() { 
           return "translate(" + tip_text2 + ")"; });
@@ -259,7 +265,7 @@ var pie = d3.layout.pie()
           .attr("class", "tip-text2")
           .text("X").on("click", remover);
 
-      var tip_position = [(centroid_adjusted[0] + 85),(centroid_adjusted[1] + 205)];
+      var tip_position = [(centroid_adjusted[0] + 90),(centroid_adjusted[1] + 205)];
 
       var toolbody = svg.append("text")
                       .attr("class","tip-text3")
@@ -298,7 +304,7 @@ var pie = d3.layout.pie()
     d3.selectAll(".tip-text3").remove();
     var tip_data = d.data
 
-    var tip_position = [(tip_data.x + 85),(tip_data.y + 205)];
+    var tip_position = [(tip_data.x + 90),(tip_data.y + 205)];
 
        var toolbody = svg
         .append("text")
@@ -306,17 +312,17 @@ var pie = d3.layout.pie()
         .attr("transform", function() { 
           return "translate(" + tip_position + ")"; });
 
-      toolbody.append("tspan")
+      toolbody.append("tspan")      
         .text(function(d){
-          return tip_data.type + " improvement:"
+          // var percent = Math.round(tip_data.value/tip_data.total * 100);
+            return tip_data.value + " buildings with";
         })
         .attr("x",0)
         .attr("y",0);
 
-      toolbody.append("tspan")      
+      toolbody.append("tspan")
         .text(function(d){
-          // var percent = Math.round(tip_data.value/tip_data.total * 100);
-            return tip_data.value + " buildings";
+          return tip_data.type + " improvement in EUI"
         })
         .attr("x",0)
         .attr("y",15);
@@ -330,21 +336,13 @@ var pie = d3.layout.pie()
       d3.selectAll(".tip-text").remove();
       d3.selectAll(".tip-text2").remove();        
       d3.selectAll(".tip-text3").remove();     
+      d3.selectAll(".legendText").remove();     
     }
 
    	resize();
     d3.select(window).on('resize', resize); 
     d3.selectAll("circle.bubble").on('click', tooltip);
-    // d3.selectAll(".closer")
-    //   .selectAll('.tip-text2')
-    //   .on('click', clickMe)
 
-       // Doesn't work the below vvvv
-    // d3.selectAll("g.arc").on('mouseout', function(){d3.selectAll(".tip-text2").remove();})
-
-    // d3.select("#master_container").on('mouseover', function() {
-    //   d3.select("#tooltip").remove();
-    // })
     resize(); 
     // Need both resizes???????
 	});
