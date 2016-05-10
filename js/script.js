@@ -147,7 +147,7 @@ var pie = d3.layout.pie()
           return "translate(" + lgspot2 + ")"; });     
 
       legendText.append("tspan")
-        .text("Partners' Buildings Participating")
+        .text("Buildings Participating Per State")
         .attr("x",0)
         .attr("y",0);
 
@@ -347,7 +347,6 @@ var pie = d3.layout.pie()
       d3.selectAll(".tip-text").remove();
       d3.selectAll(".tip-text2").remove();        
       d3.selectAll(".tip-text3").remove();     
-      d3.selectAll(".legendText").remove();     
     }
 
    	resize();
