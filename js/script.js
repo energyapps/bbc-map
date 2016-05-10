@@ -208,8 +208,9 @@ var pie = d3.layout.pie()
       };
 
         tip_text  = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1] + 20)];
-        tip_text2  = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1] + 40)];
-        pie_center = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1]+(radius + 40))];
+        tip_text2  = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1] + 55)];
+        tip_text4  = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1] + 40)];      
+        pie_center = [(centroid_adjusted[0] + radius + 10),(centroid_adjusted[1]+(radius + 50))];
         tip_close = [(centroid_adjusted[0] + radius*2 + 10),(centroid_adjusted[1]+(15))];
 
       var zeroten = parseInt(data.properties.imp_none) + parseInt(data.properties.imp_ten);
@@ -230,7 +231,7 @@ var pie = d3.layout.pie()
         .attr("transform", function() { 
           return "translate(" + centroid_adjusted + ")"; })
         .attr("width", (radius * 2 + 20))
-        .attr("height", (radius * 2 + 65))
+        .attr("height", (radius * 2 + 80))
         .attr("rx", 6)
         .attr("ry", 6)
         // .attr("fill", "brown");
@@ -244,6 +245,16 @@ var pie = d3.layout.pie()
         })
         .attr("transform", function() { 
           return "translate(" + tip_text + ")"; });
+
+      svg
+        .append("text")
+        .attr("class","tip-text2")
+        .text(function(d){
+            //calculate million sqft
+            return data.properties.total + " buildings"
+        })
+        .attr("transform", function() { 
+          return "translate(" + tip_text4 + ")"; });
 
       svg
         .append("text")
@@ -265,7 +276,7 @@ var pie = d3.layout.pie()
           .attr("class", "tip-text2")
           .text("X").on("click", remover);
 
-      var tip_position = [(centroid_adjusted[0] + 90),(centroid_adjusted[1] + 205)];
+      var tip_position = [(centroid_adjusted[0] + 90),(centroid_adjusted[1] + 215)];
 
       var toolbody = svg.append("text")
                       .attr("class","tip-text3")
@@ -304,7 +315,7 @@ var pie = d3.layout.pie()
     d3.selectAll(".tip-text3").remove();
     var tip_data = d.data
 
-    var tip_position = [(tip_data.x + 90),(tip_data.y + 205)];
+    var tip_position = [(tip_data.x + 90),(tip_data.y + 215)];
 
        var toolbody = svg
         .append("text")
