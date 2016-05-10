@@ -102,15 +102,14 @@
 
 .bubbles {
   fill-opacity: .5;
-  stroke: #E7227E;
+  stroke: #FFF;
   stroke-width: .7px;
 }
 
 .bubbles :hover {
-  stroke: #ffcc33;
-  stroke-width: 5px;
+  stroke:#e9388a;
+  stroke-width: 3px;
   cursor: pointer;
-  fill-opacity:.79;
 }
 
 .posB {
