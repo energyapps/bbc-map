@@ -169,7 +169,6 @@ var pie = d3.layout.pie()
     }
 
     function tooltip(d) {     
-      console.log(d)
 
       width = parseInt(d3.select("#master_container").style("width")) - margin*2,
 
@@ -214,10 +213,10 @@ var pie = d3.layout.pie()
 
 // Create array for pie charts here!!!!!!!!!!!!!!!!!!!!!!! put in memory and use laterZZzzzZzzZzzzZZzzZZZz
       var data_array = [        
-        {type: "None", value: data.properties.imp_none, x:centroid_adjusted[0], y:centroid_adjusted[1]},
-        {type: "1-10%", value: data.properties.imp_ten, x:centroid_adjusted[0], y:centroid_adjusted[1]},
-        {type: "11-20%", value: data.properties.imp_twenty, x:centroid_adjusted[0], y:centroid_adjusted[1]},
-        {type: ">20%", value: data.properties.imp_greater, x:centroid_adjusted[0], y:centroid_adjusted[1]}
+        {type: "None", total: data.properties.total ,value: data.properties.imp_none, x:centroid_adjusted[0], y:centroid_adjusted[1]},
+        {type: "1-10%", total: data.properties.total ,value: data.properties.imp_ten, x:centroid_adjusted[0], y:centroid_adjusted[1]},
+        {type: "11-20%", total: data.properties.total ,value: data.properties.imp_twenty, x:centroid_adjusted[0], y:centroid_adjusted[1]},
+        {type: ">20%", total: data.properties.total ,value: data.properties.imp_greater, x:centroid_adjusted[0], y:centroid_adjusted[1]}
         ];
 
       var tooltipContainer = svg.append("g")
@@ -289,13 +288,39 @@ var pie = d3.layout.pie()
       g.append("path")
         .attr("d", arc)
         .style("fill", function(d) { 
-          // console.log(d)
           return color(d.data.type); });
 
     d3.selectAll("g.arc").on('mouseover', arctip);      
   }    
 
 
+  function arctip(d) { 
+    d3.selectAll(".tip-text3").remove();
+    var tip_data = d.data
+
+    var tip_position = [(tip_data.x + 85),(tip_data.y + 205)];
+
+       var toolbody = svg
+        .append("text")
+        .attr("class","tip-text3")
+        .attr("transform", function() { 
+          return "translate(" + tip_position + ")"; });
+
+      toolbody.append("tspan")
+        .text(function(d){
+          return tip_data.type + " improvement:"
+        })
+        .attr("x",0)
+        .attr("y",0);
+
+      toolbody.append("tspan")      
+        .text(function(d){
+          // var percent = Math.round(tip_data.value/tip_data.total * 100);
+            return tip_data.value + " buildings";
+        })
+        .attr("x",0)
+        .attr("y",15);
+      }
 
 
 
@@ -319,7 +344,6 @@ var pie = d3.layout.pie()
 
     // d3.select("#master_container").on('mouseover', function() {
     //   d3.select("#tooltip").remove();
-    //   console.log('h')
     // })
     resize(); 
     // Need both resizes???????
