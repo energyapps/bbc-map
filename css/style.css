@@ -102,25 +102,19 @@
 
 .bubbles {
   fill-opacity: .5;
-  stroke: #333;
-  stroke-width: .5px;
-  /*fill: #cdd;*/
-  fill:#ffb732;
+  stroke: #E7227E;
+  stroke-width: .7px;
 }
 
 .bubbles :hover {
-  stroke: #ffb732;
-  stroke-width: 3px;
-  /*fill: #ff5614;*/
+  stroke: #ffcc33;
+  stroke-width: 5px;
   cursor: pointer;
+  fill-opacity:.79;
 }
 
 .posB {
-  fill:#ffb732;
-}
-
-.negB {
-  fill: #ADD8E6;
+  fill:#19A9E2;
 }
 
 .legend circle {
